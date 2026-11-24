@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rockafellar &amp; Uryasev (2000) — Optimization of Conditional Value-at-Risk</title><style>
+:root{--bg:#fbfaf7;--fg:#23262d;--mute:#667085;--line:#e2ddd0;--acc:#1f8a7d;--card:#fff;--code:#f1eee6}
+@media(prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#e8e6df;--mute:#a3a8b3;--line:#2e323b;--acc:#5cc6b8;--card:#1f232b;--code:#262a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+nav{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+nav a{color:var(--fg);text-decoration:none}nav a:hover{color:var(--acc)}
+main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:2rem;line-height:1.3;margin:.4em 0 .6em}h2{font-size:1.45rem;margin:2em 0 .6em;padding-bottom:.25em;border-bottom:1px solid var(--line)}h3{font-size:1.15rem;margin:1.6em 0 .5em}
+a{color:var(--acc)}code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.5}pre code{background:none;padding:0}
+pre.mermaid{background:none;text-align:center}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93em;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--code)}
+blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid var(--acc);background:var(--card);color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:1.2em;line-height:1.6}
+mjx-container[display=true]{overflow-x:auto;overflow-y:hidden}
+footer{max-width:920px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mute)}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body><header><nav><a href="../../index.html">首頁</a><a href="../../wiki/overview.html">綜述</a><a href="../../wiki/index.html">目錄</a><a href="../../wiki/comparisons/risk-metrics-comparison.html">指標總比較</a><a href="../../AGENTS.html">AGENTS</a><a href="https://claude.ai/artifact/X1tYwyXWwQr4K1spMCeQX2">教學簡報</a></nav></header><main><div class="meta"><b>type</b>:source ｜ <b>title</b>:Optimization of Conditional Value-at-Risk ｜ <b>authors</b>:Rockafellar、Uryasev ｜ <b>year</b>:2000 ｜ <b>raw_file</b>:none ｜ <b>source_url</b>:<a href="https://risknet.de/elibrary/paper/optimization-of-conditional-value-at-risk">https://risknet.de/elibrary/paper/optimization-of-conditional-value-at-risk</a> ｜ <b>access</b>:full-text ｜ <b>version_read</b>:工作稿 1999-09-05(正式發表於 Journal of Risk 2(3), 21–41, 2000) ｜ <b>ingested</b>:2026-11-18 ｜ <b>metrics</b>:value-at-risk、expected-shortfall</div><h1>Rockafellar &amp; Uryasev (2000) — Optimization of Conditional Value-at-Risk</h1>
+<h2>基本資料</h2>
+<ul>
+<li>作者:R. Tyrrell Rockafellar、Stanislav Uryasev</li>
+<li>發表:<em>Journal of Risk</em> 2(3), 2000;本頁讀取的是 1999 年 9 月工作稿〔版本差異待核對〕。</li>
+</ul>
+<h2>研究問題</h2>
+<p>能否找到一種在實務上可計算、可最佳化的方式,同時算出 VaR 並最小化 CVaR,用於投資組合最佳化與避險?</p>
+<h2>方法與資料</h2>
+<ul>
+<li>定義輔助函數 $F_\beta(x,\alpha)=\alpha+\frac{1}{1-\beta}E[(f(x,y)-\alpha)^+]$,證明對 $\alpha$ 取最小值即得 CVaR,最小值的左端點即 VaR。</li>
+<li>以情境抽樣近似期望,把最小化 CVaR 化為<strong>線性規劃</strong>。</li>
+<li>兩個數值應用:(1) 三資產投資組合(S&amp;P 500、長期公債、小型股;常態報酬;偽隨機與 Sobol 準隨機兩種抽樣);(2) NIKKEI 蝶式選擇權部位的避險(取自 Mausser &amp; Rosen 1999)。</li>
+<li>理論前提:損失分布連續(無跳躍),有密度函數;作者明言把一般分布留給後續論文。</li>
+</ul>
+<h2>核心結論</h2>
+<ol>
+<li>CVaR 等於 $F_\beta$ 對 $\alpha$ 的最小值,且 VaR 是最小化者區間的左端點;因此最小化 CVaR 時可同時得到 VaR。</li>
+<li>當損失對決策變數為凸函數時,CVaR 對決策變數也是凸函數,最佳化屬凸規劃,不需要假設常態分布。</li>
+<li>定義上 VaR 不會超過 CVaR,因此低 CVaR 的投資組合必然 VaR 也低。</li>
+<li>若損失為常態分布且 $\beta\ge0.5$,並且期望報酬約束有效,則最小化 VaR、CVaR、變異數三者得到同一投資組合。</li>
+<li>準隨機(Sobol)抽樣的收斂明顯優於偽隨機:樣本數超過 10,000 時,與最小變異數解的差距小於 1%。</li>
+<li>NIKKEI 避險範例顯示 CVaR 能捕捉 VaR 看不到的風險:同一部位在 0.95 水準下 VaR 為負(代表有 95% 機率獲利),但 CVaR 為正的大額損失;多工具同時避險也比單一工具避險大幅降低 CVaR。</li>
+</ol>
+<h2>涉及的風險指標</h2>
+<ul>
+<li><a href="../metrics/expected-shortfall.html">預期短缺 ES / CVaR</a></li>
+<li><a href="../metrics/value-at-risk.html">風險值 VaR</a></li>
+</ul>
+<h2>限制與注意事項</h2>
+<ul>
+<li>連續分布與密度存在的假設只為簡化,一般(離散)分布的 CVaR 定義較複雜,留待後續;這正是 <a href="acerbi-2002-coherence-expected-shortfall.html">Acerbi &amp; Tasche (2002)</a> 後來釐清的部分。</li>
+<li>數值實驗維度低(3 資產、11 工具),作者說明僅供示範。</li>
+<li>論文把 CVaR 的 TCE 等價關係當作連續分布下的事實;一般分布下並不成立,見 <a href="../concepts/tail-risk-measure-variants.html">尾部風險度量的變體與關係</a>。</li>
+<li>發表當時作者指出 CVaR 尚未成為金融業標準,在保險業則逐漸受到採用(截至該論文時點)。</li>
+</ul>
+<h2>與其他論文的關係</h2>
+<ul>
+<li>承接 <a href="artzner-1999-coherent-measures.html">Artzner et al. (1999)</a> 對 VaR 的批評;文中引用 Pflug(2000)證明 CVaR 的一致性。</li>
+<li>其 CVaR 的最小化表示式,被 <a href="acerbi-2002-coherence-expected-shortfall.html">Acerbi &amp; Tasche (2002)</a> 證明與 ES 為同一物件。</li>
+</ul></main>
+<footer>投資風險衡量 LLM Wiki · 由 Agent 維護的 markdown 知識庫</footer></body></html>

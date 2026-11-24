@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Artzner et al. (1999) — Coherent Measures of Risk</title><style>
+:root{--bg:#fbfaf7;--fg:#23262d;--mute:#667085;--line:#e2ddd0;--acc:#1f8a7d;--card:#fff;--code:#f1eee6}
+@media(prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#e8e6df;--mute:#a3a8b3;--line:#2e323b;--acc:#5cc6b8;--card:#1f232b;--code:#262a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+nav{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+nav a{color:var(--fg);text-decoration:none}nav a:hover{color:var(--acc)}
+main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:2rem;line-height:1.3;margin:.4em 0 .6em}h2{font-size:1.45rem;margin:2em 0 .6em;padding-bottom:.25em;border-bottom:1px solid var(--line)}h3{font-size:1.15rem;margin:1.6em 0 .5em}
+a{color:var(--acc)}code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.5}pre code{background:none;padding:0}
+pre.mermaid{background:none;text-align:center}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93em;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--code)}
+blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid var(--acc);background:var(--card);color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:1.2em;line-height:1.6}
+mjx-container[display=true]{overflow-x:auto;overflow-y:hidden}
+footer{max-width:920px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mute)}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body><header><nav><a href="../../index.html">首頁</a><a href="../../wiki/overview.html">綜述</a><a href="../../wiki/index.html">目錄</a><a href="../../wiki/comparisons/risk-metrics-comparison.html">指標總比較</a><a href="../../AGENTS.html">AGENTS</a><a href="https://claude.ai/artifact/X1tYwyXWwQr4K1spMCeQX2">教學簡報</a></nav></header><main><div class="meta"><b>type</b>:source ｜ <b>title</b>:Coherent Measures of Risk ｜ <b>authors</b>:Artzner、Delbaen、Eber、Heath ｜ <b>year</b>:1999 ｜ <b>raw_file</b>:none ｜ <b>source_url</b>:<a href="https://risknet.de/elibrary/paper/coherent-measures-of-risk">https://risknet.de/elibrary/paper/coherent-measures-of-risk</a> ｜ <b>access</b>:full-text ｜ <b>version_read</b>:工作稿 1998-07-22(正式發表於 Mathematical Finance 9(3), 203–228, 1999) ｜ <b>ingested</b>:2026-11-18 ｜ <b>metrics</b>:value-at-risk、expected-shortfall</div><h1>Artzner et al. (1999) — Coherent Measures of Risk</h1>
+<h2>基本資料</h2>
+<ul>
+<li>作者:Philippe Artzner、Freddy Delbaen、Jean-Marc Eber、David Heath</li>
+<li>發表:<em>Mathematical Finance</em> 9(3), 1999;本頁讀取的是 1998 年 7 月的工作稿,與正式版可能有細節差異〔待核對〕。</li>
+</ul>
+<h2>研究問題</h2>
+<p>風險衡量應該滿足哪些最低限度的性質,才適合用來訂定資本要求、保證金與風險限額?現行方法(SPAN、SEC/NASD 規則、基於分位數的 VaR)是否符合這些性質?</p>
+<h2>方法與資料</h2>
+<p>純理論加上具體算例。以「未來淨值」為風險對象(而非價值變動),定義「可接受集合(acceptance set)」,再導出風險度量。樣本空間假設為有限集合。以 SPAN、SEC 保證金規則和 VaR 作為被檢驗的實務方法。</p>
+<h2>核心結論</h2>
+<ol>
+<li>提出四條公理——平移不變性、次可加性、正齊次性、單調性——滿足者稱為<strong>一致性(coherent)風險度量</strong>。詳見 <a href="../concepts/coherent-risk-measure.html">一致性風險度量</a>。</li>
+<li><strong>表示定理</strong>:一個風險度量是一致的,若且唯若它等於在一組「廣義情境(generalized scenarios)」機率測度上取預期損失的上確界。情境越多,度量越保守。</li>
+<li><strong>VaR 不具次可加性</strong>,論文用數位選擇權、信用債券集中度與風險配置三類算例說明,並主張應拒絕以 VaR 作為風險度量。詳見 <a href="../metrics/value-at-risk.html">風險值 VaR</a>。</li>
+<li>SPAN 的情境式計算本身是一致的;SEC/NASD 的保證金規則可視為其對偶,但在蝶式部位上過度保守(例中要求 30,而最壞損失僅 10)。</li>
+<li>提出<strong>尾部條件期望(TCE)</strong>與<strong>最壞條件期望(WCE)</strong>,其中 WCE 為一致的;在特定條件下 TCE 與 WCE 一致。後續研究發現 TCE 在一般情況下並不一致,見 <a href="../concepts/tail-risk-measure-variants.html">尾部風險度量的變體與關係</a>。</li>
+<li>公理並未唯一決定某個度量,而是刻畫一整類;實際選擇仍需額外的經濟考量。</li>
+</ol>
+<h2>涉及的風險指標</h2>
+<ul>
+<li><a href="../metrics/value-at-risk.html">風險值 VaR</a></li>
+<li><a href="../metrics/expected-shortfall.html">預期短缺 ES / CVaR</a>(以 TCE / WCE 形式出現)</li>
+</ul>
+<h2>限制與注意事項</h2>
+<ul>
+<li>假設樣本空間有限,且只考慮單一期間。</li>
+<li>作者自承:以單一數字描述風險會損失資訊,但認為實務上的決策本質是二元的(允許或不允許)。</li>
+<li>此版本尚無 ES(Acerbi–Tasche)的一般化定義,TCE 的一致性主張後來被修正。</li>
+<li>論文指出 VaR 使用的機率應是「估計的實際機率」還是「審慎選擇的主觀機率」並不明確。</li>
+</ul>
+<h2>與其他論文的關係</h2>
+<ul>
+<li>被 <a href="rockafellar-2000-cvar-optimization.html">Rockafellar &amp; Uryasev (2000)</a> 引為 VaR 缺陷的依據,並由後者提供可最佳化的 CVaR。</li>
+<li>被 <a href="acerbi-2002-coherence-expected-shortfall.html">Acerbi &amp; Tasche (2002)</a> 修正:TCE 不一定一致,ES 才是在任何分布下都一致且易估計的版本。</li>
+<li>與 <a href="sharpe-1994-sharpe-ratio.html">Sharpe (1994)</a> 的取向不同:Sharpe 在均值—變異數架構下工作,Artzner 等人則指出以標準差構成的度量(−E[X]+ασ 形式)違反單調性。</li>
+</ul></main>
+<footer>投資風險衡量 LLM Wiki · 由 Agent 維護的 markdown 知識庫</footer></body></html>

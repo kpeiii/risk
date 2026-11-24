@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>尾部風險度量的變體與關係(TCE / WCE / CVaR / ES)</title><style>
+:root{--bg:#fbfaf7;--fg:#23262d;--mute:#667085;--line:#e2ddd0;--acc:#1f8a7d;--card:#fff;--code:#f1eee6}
+@media(prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#e8e6df;--mute:#a3a8b3;--line:#2e323b;--acc:#5cc6b8;--card:#1f232b;--code:#262a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+nav{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+nav a{color:var(--fg);text-decoration:none}nav a:hover{color:var(--acc)}
+main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:2rem;line-height:1.3;margin:.4em 0 .6em}h2{font-size:1.45rem;margin:2em 0 .6em;padding-bottom:.25em;border-bottom:1px solid var(--line)}h3{font-size:1.15rem;margin:1.6em 0 .5em}
+a{color:var(--acc)}code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.5}pre code{background:none;padding:0}
+pre.mermaid{background:none;text-align:center}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93em;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--code)}
+blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid var(--acc);background:var(--card);color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:1.2em;line-height:1.6}
+mjx-container[display=true]{overflow-x:auto;overflow-y:hidden}
+footer{max-width:920px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mute)}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body><header><nav><a href="../../index.html">首頁</a><a href="../../wiki/overview.html">綜述</a><a href="../../wiki/index.html">目錄</a><a href="../../wiki/comparisons/risk-metrics-comparison.html">指標總比較</a><a href="../../AGENTS.html">AGENTS</a><a href="https://claude.ai/artifact/X1tYwyXWwQr4K1spMCeQX2">教學簡報</a></nav></header><main><div class="meta"><b>type</b>:concept ｜ <b>updated</b>:2026-11-18 ｜ <b>source_count</b>:3</div><h1>尾部風險度量的變體與關係(TCE / WCE / CVaR / ES)</h1>
+<p>文獻中對「超過 VaR 的條件期望」有多個名稱與定義,常被誤以為相同。此頁整理它們的定義與關係,主要依 <a href="../sources/acerbi-2002-coherence-expected-shortfall.html">Acerbi &amp; Tasche (2002)</a>。</p>
+<h2>定義對照(α 為尾部機率)</h2>
+<div class="wrap"><table>
+<thead>
+<tr>
+<th>名稱</th>
+<th>直覺定義</th>
+<th>出處</th>
+<th>一致嗎?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCE(尾部條件期望,下/上兩版)</td>
+<td>損失超過下/上 VaR 分位數時的條件平均</td>
+<td>Artzner et al. 1999</td>
+<td><strong>否</strong>(一般不具次可加性)</td>
+</tr>
+<tr>
+<td>WCE(最壞條件期望)</td>
+<td>在所有機率 &gt; α 的事件上,條件期望的最壞者</td>
+<td>Artzner et al. 1999</td>
+<td>是,但依賴底層機率空間</td>
+</tr>
+<tr>
+<td>CVaR</td>
+<td>$\min_t\{t+\frac1\alpha E[(L-t)^+]\}$</td>
+<td>Rockafellar &amp; Uryasev 2000;Pflug 2000</td>
+<td>是</td>
+</tr>
+<tr>
+<td>ES / tail mean</td>
+<td>最差 100α% 情境的平均損失</td>
+<td>Acerbi et al. 2001;Acerbi &amp; Tasche 2002</td>
+<td>是(任意分布)</td>
+</tr>
+<tr>
+<td>其他別名:mean excess loss、mean shortfall、tail VaR</td>
+<td></td>
+<td>Rockafellar &amp; Uryasev</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<h2>關係</h2>
+<ul>
+<li><strong>ES = CVaR</strong>(同一物件)。</li>
+<li>不等式:TCE(下) ≤ TCE(上) ≤ ES;TCE ≤ WCE ≤ ES(Acerbi &amp; Tasche, Cor. 5.2)。</li>
+<li>分布連續(或滿足一些邊界條件)時:ES = WCE = TCE(Cor. 5.3)。</li>
+<li>分布有質量點(離散、混合)時三者可能不同,且 TCE、WCE 對 α 可能不連續,ES 則連續。</li>
+<li>ES 等於「在所有能表示同一分布的機率空間上,取 WCE 的最大值」(Cor. 6.3),即 ES 是 WCE 的穩健版本。</li>
+<li>Artzner 等人另證:在基底機率為均勻、且風險值彼此不同的有限空間,TCE = WCE(Prop. 5.3);任何只依賴分布且大於等於 VaR 的一致度量,在該情況下都不小於 WCE(Prop. 5.4)。</li>
+</ul>
+<h2>為什麼名稱會造成混亂</h2>
+<ul>
+<li>Acerbi &amp; Tasche 指出,Artzner 等人 1997 年的短文〈Thinking Coherently〉(Risk)中有一處措辭容易讓讀者以為 TCE 與 WCE 相同(1999 年論文本身則已提醒兩者在一般情況下不同)。</li>
+<li>Pflug 把 CVaR 寫成等於 TCE 且不加條件;Acerbi &amp; Tasche 指出僅在分布連續等條件下成立。</li>
+<li>Rockafellar &amp; Uryasev 在連續分布假設下定義 CVaR,此時與 TCE 一致;一般分布下需用最小化形式作為定義。</li>
+</ul>
+<h2>實務含意</h2>
+<ul>
+<li>實作時<strong>用最小化形式或分位數積分形式</strong>,避免用「找出超過 VaR 的樣本再取平均」(離散資料下可能不一致、不連續)。</li>
+<li>估計端:樣本最差 ⌊nα⌋ 筆的平均會收斂到 ES,即便 VaR 的順序統計量估計量不收斂(Acerbi &amp; Tasche, Prop. 4.1)。</li>
+</ul>
+<h2>相關頁面</h2>
+<p><a href="../metrics/expected-shortfall.html">預期短缺 ES / CVaR</a>、<a href="../metrics/value-at-risk.html">風險值 VaR</a>、<a href="coherent-risk-measure.html">一致性風險度量</a>。</p></main>
+<footer>投資風險衡量 LLM Wiki · 由 Agent 維護的 markdown 知識庫</footer></body></html>

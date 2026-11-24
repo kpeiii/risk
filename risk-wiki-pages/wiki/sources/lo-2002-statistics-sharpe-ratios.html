@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lo (2002) — The Statistics of Sharpe Ratios</title><style>
+:root{--bg:#fbfaf7;--fg:#23262d;--mute:#667085;--line:#e2ddd0;--acc:#1f8a7d;--card:#fff;--code:#f1eee6}
+@media(prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#e8e6df;--mute:#a3a8b3;--line:#2e323b;--acc:#5cc6b8;--card:#1f232b;--code:#262a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+nav{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+nav a{color:var(--fg);text-decoration:none}nav a:hover{color:var(--acc)}
+main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:2rem;line-height:1.3;margin:.4em 0 .6em}h2{font-size:1.45rem;margin:2em 0 .6em;padding-bottom:.25em;border-bottom:1px solid var(--line)}h3{font-size:1.15rem;margin:1.6em 0 .5em}
+a{color:var(--acc)}code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.5}pre code{background:none;padding:0}
+pre.mermaid{background:none;text-align:center}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93em;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--code)}
+blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid var(--acc);background:var(--card);color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:1.2em;line-height:1.6}
+mjx-container[display=true]{overflow-x:auto;overflow-y:hidden}
+footer{max-width:920px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mute)}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body><header><nav><a href="../../index.html">首頁</a><a href="../../wiki/overview.html">綜述</a><a href="../../wiki/index.html">目錄</a><a href="../../wiki/comparisons/risk-metrics-comparison.html">指標總比較</a><a href="../../AGENTS.html">AGENTS</a><a href="https://claude.ai/artifact/X1tYwyXWwQr4K1spMCeQX2">教學簡報</a></nav></header><main><div class="meta"><b>type</b>:source ｜ <b>title</b>:The Statistics of Sharpe Ratios ｜ <b>authors</b>:Lo ｜ <b>year</b>:2002 ｜ <b>raw_file</b>:none ｜ <b>source_url</b>:<a href="https://traders.studentorg.berkeley.edu/papers/The-Statistics-of-Sharpe-Ratios.pdf">https://traders.studentorg.berkeley.edu/papers/The-Statistics-of-Sharpe-Ratios.pdf</a> ｜ <b>access</b>:full-text ｜ <b>version_read</b>:Financial Analysts Journal 58(4), 36–52, 2002 的 PDF 副本(部分數學符號在文字抽取中遺失,公式依上下文重建〔待核對〕) ｜ <b>ingested</b>:2026-11-18 ｜ <b>metrics</b>:sharpe-ratio</div><h1>Lo (2002) — The Statistics of Sharpe Ratios</h1>
+<h2>基本資料</h2>
+<ul>
+<li>作者:Andrew W. Lo</li>
+<li>發表:<em>Financial Analysts Journal</em> 58(4), 2002。PDF 文字抽取時希臘字母與部分公式遺失,下文公式以可驗證的數值(論文表格與正文數字)交叉核對過。</li>
+</ul>
+<h2>研究問題</h2>
+<p>Sharpe ratio 的組成部分(期望報酬與波動度)都得由資料估計,因此 Sharpe ratio 本身有估計誤差。這個誤差有多大?常見的「月度 Sharpe ratio 乘以 √12 得年度值」是否正確?</p>
+<h2>方法與資料</h2>
+<ul>
+<li>以大樣本漸近理論,在三種設定下推導 Sharpe ratio 估計量的分布:獨立同分布(IID)、平穩(stationary)、與時間聚合(time aggregation)。非 IID 情形使用廣義動差法(GMM)與 Newey–West 估計。</li>
+<li>實證:10 檔最大共同基金(最早自 1963 年起,至 2000 年 6 月)與 12 檔對沖基金(1989–1995 年起,至 2000 年 12 月,取自 Altvest 資料庫,各基金至少 5 年月報酬)。</li>
+</ul>
+<h2>核心結論</h2>
+<ol>
+<li>IID 下,Sharpe ratio 估計量的標準誤約為 $\sqrt{(1+\tfrac12 SR^2)/T}$,可據此建立信賴區間。Sharpe ratio 越高,絕對標準誤越大(60 期樣本:SR=1.5 時 0.188,SR=3.0 時 0.303)。</li>
+<li><strong>√q 年化規則僅在 IID 下成立。</strong> 一般情況需以前 q−1 階自相關調整。正序列相關使調整係數低於 √q,負序列相關使其高於 √q。</li>
+<li>AR(1) 範例:月度一階自相關 −20% 時,年化係數為 4.17;IID 為 3.46;+20% 時為 2.88。</li>
+<li>共同基金序列相關很小,IID 與穩健估計差異不大;對沖基金序列相關高(月度一階自相關介於 −20.2% 到 49.0%),以 IID 方式年化可高估超過 65%,基金排名也會大幅改變。例:Mortgage-backed securities 基金從 4.03 降到 2.44。</li>
+<li>穩健估計量有代價(額外估計誤差);除非序列相關顯著,不應使用。建議以 Ljung–Box Q 統計量先檢驗序列相關。</li>
+<li>作者提醒:Sharpe ratio 會隨聚合期間拉長而增大,這容易讓長期投資看起來更有吸引力,是誤導性的;它不是多期策略風險的完整摘要,不應單獨作為決策標準。</li>
+</ol>
+<h2>涉及的風險指標</h2>
+<ul>
+<li><a href="../metrics/sharpe-ratio.html">Sharpe ratio</a></li>
+</ul>
+<h2>限制與注意事項</h2>
+<ul>
+<li>漸近結果依賴大樣本;小樣本表現未在本文處理。</li>
+<li>年化的校正只處理序列相關;未涉及偏態、厚尾對估計的影響。</li>
+<li>實證樣本為 2000 年前後的共同基金與少量匿名對沖基金。</li>
+</ul>
+<h2>與其他論文的關係</h2>
+<ul>
+<li>補完 <a href="sharpe-1994-sharpe-ratio.html">Sharpe (1994)</a> 未處理的統計性質,並修正其所述「常見年化作法」只在 IID 時成立。</li>
+<li>序列相關與 IID 假設的整理見 <a href="../concepts/iid-and-serial-correlation.html">IID 假設與序列相關</a>。</li>
+</ul></main>
+<footer>投資風險衡量 LLM Wiki · 由 Agent 維護的 markdown 知識庫</footer></body></html>

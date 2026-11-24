@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四種風險指標總比較:VaR、ES、Sharpe ratio、MDD</title><style>
+:root{--bg:#fbfaf7;--fg:#23262d;--mute:#667085;--line:#e2ddd0;--acc:#1f8a7d;--card:#fff;--code:#f1eee6}
+@media(prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#e8e6df;--mute:#a3a8b3;--line:#2e323b;--acc:#5cc6b8;--card:#1f232b;--code:#262a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+nav{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+nav a{color:var(--fg);text-decoration:none}nav a:hover{color:var(--acc)}
+main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:2rem;line-height:1.3;margin:.4em 0 .6em}h2{font-size:1.45rem;margin:2em 0 .6em;padding-bottom:.25em;border-bottom:1px solid var(--line)}h3{font-size:1.15rem;margin:1.6em 0 .5em}
+a{color:var(--acc)}code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.5}pre code{background:none;padding:0}
+pre.mermaid{background:none;text-align:center}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93em;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--code)}
+blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid var(--acc);background:var(--card);color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:1.2em;line-height:1.6}
+mjx-container[display=true]{overflow-x:auto;overflow-y:hidden}
+footer{max-width:920px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mute)}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body><header><nav><a href="../../index.html">首頁</a><a href="../../wiki/overview.html">綜述</a><a href="../../wiki/index.html">目錄</a><a href="../../wiki/comparisons/risk-metrics-comparison.html">指標總比較</a><a href="../../AGENTS.html">AGENTS</a><a href="https://claude.ai/artifact/X1tYwyXWwQr4K1spMCeQX2">教學簡報</a></nav></header><main><div class="meta"><b>type</b>:comparison ｜ <b>updated</b>:2026-11-18 ｜ <b>source_count</b>:6</div><h1>四種風險指標總比較:VaR、ES、Sharpe ratio、MDD</h1>
+<blockquote>
+<p>這四者不屬於同一種東西:<strong>VaR 與 ES 是「損失分布尾部」的風險度量</strong>;<strong>Sharpe ratio 是「報酬對波動」的績效比率</strong>;<strong>MDD 是「路徑」統計量</strong>。比較時要先分清楚用途。</p>
+</blockquote>
+<h2>總表</h2>
+<div class="wrap"><table>
+<thead>
+<tr>
+<th>面向</th>
+<th><a href="../metrics/value-at-risk.html">VaR</a></th>
+<th><a href="../metrics/expected-shortfall.html">ES / CVaR</a></th>
+<th><a href="../metrics/sharpe-ratio.html">Sharpe ratio</a></th>
+<th><a href="../metrics/maximum-drawdown.html">MDD</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>類型</td>
+<td>尾部風險度量</td>
+<td>尾部風險度量</td>
+<td>風險調整績效比率</td>
+<td>路徑型下跌統計</td>
+</tr>
+<tr>
+<td>衡量什麼</td>
+<td>最差 α 情境的損失門檻</td>
+<td>最差 α 情境的平均損失</td>
+<td>每單位波動的超額報酬</td>
+<td>高點到低點最大跌幅</td>
+</tr>
+<tr>
+<td>需要的輸入</td>
+<td>損益分布與分位數</td>
+<td>損益分布的尾部</td>
+<td>均值與標準差(差額報酬)</td>
+<td>價值或報酬的時間序列路徑</td>
+</tr>
+<tr>
+<td>核心假設</td>
+<td>需機率模型;常態下才次可加</td>
+<td>只需損失期望存在;不需常態</td>
+<td>均值—變異數足夠;IID 簡化公式</td>
+<td>理論基準為布朗運動帶漂移(摘要層級)</td>
+</tr>
+<tr>
+<td>一致性</td>
+<td>否</td>
+<td>是</td>
+<td>不適用(非資本要求用度量)</td>
+<td>尚無已 ingest 論文討論</td>
+</tr>
+<tr>
+<td>主要優點</td>
+<td>簡單、普及、監管對接</td>
+<td>一致、看尾部、可最佳化</td>
+<td>尺度獨立、可做統計檢定</td>
+<td>直觀、反映持續性損失</td>
+</tr>
+<tr>
+<td>主要缺點</td>
+<td>破壞次可加、忽略尾部嚴重度</td>
+<td>尾部資料少時估計不穩〔推論,尚無論文驗證〕</td>
+<td>忽略偏態/峰態/相關性、年化易誤用</td>
+<td>依賴期間長度與取樣頻率、只看單一最糟事件</td>
+</tr>
+<tr>
+<td>論文證據強度</td>
+<td>高(三篇)</td>
+<td>高(三篇)</td>
+<td>高(兩篇)</td>
+<td><strong>低</strong>(僅摘要層級)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>適用情境對照</h2>
+<div class="wrap"><table>
+<thead>
+<tr>
+<th>情境</th>
+<th>建議</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>訂資本要求、限額、分權管理</td>
+<td>ES(次可加 → 可分解)</td>
+<td>Artzner et al.</td>
+</tr>
+<tr>
+<td>報告單一門檻、對接既有監管</td>
+<td>VaR(附局限說明)</td>
+<td>Artzner et al.; Rockafellar &amp; Uryasev</td>
+</tr>
+<tr>
+<td>用大量情境最佳化投資組合或避險</td>
+<td>ES / CVaR(線性規劃)</td>
+<td>Rockafellar &amp; Uryasev</td>
+</tr>
+<tr>
+<td>比較同類基金(序列相關小)</td>
+<td>Sharpe ratio</td>
+<td>Sharpe; Lo</td>
+</tr>
+<tr>
+<td>比較有序列相關的基金(如對沖基金)</td>
+<td>以 Lo 的穩健估計年化後再比</td>
+<td>Lo</td>
+</tr>
+<tr>
+<td>評估投資人對持續性虧損的承受度</td>
+<td>MDD(搭配報酬做 Calmar)</td>
+<td>Magdon-Ismail &amp; Atiya(摘要層級)</td>
+</tr>
+<tr>
+<td>報酬分布明顯偏態或厚尾</td>
+<td>不要只靠 Sharpe;補 ES</td>
+<td>Sharpe(明言不涵蓋高階動差)</td>
+</tr>
+</tbody>
+</table></div>
+<h2>關鍵交叉結論</h2>
+<ol>
+<li><strong>VaR → ES 的演進</strong>:VaR 破壞次可加性(Artzner)→ CVaR 提供可最佳化的替代(Rockafellar &amp; Uryasev)→ ES 釐清並統一一般分布下的定義(Acerbi &amp; Tasche)。詳見 <a href="var-vs-expected-shortfall.html">VaR 與 ES 比較</a> 與 <a href="../concepts/tail-risk-measure-variants.html">尾部風險度量的變體</a>。</li>
+<li><strong>Sharpe ratio 的統計不確定性常被低估</strong>:五年月資料的 Sharpe ratio 信賴區間可能涵蓋 0(<a href="../metrics/sharpe-ratio.html">Sharpe ratio 頁</a> 的算例);年化時更要檢查序列相關(<a href="../concepts/iid-and-serial-correlation.html">IID 假設與序列相關</a>)。</li>
+<li><strong>Sharpe 與 MDD 都隨時間縮放,但方式不同</strong>:Sharpe ratio 在 IID 下隨 √T 增長;期望 MDD 在正漂移下約隨 ln T 增長(摘要層級〔待核對〕)。因此兩者都不能在不同長度的紀錄間直接比較。</li>
+<li><strong>一致性公理只對「資本要求型風險度量」有意義</strong>,不應拿來評價 Sharpe ratio 或 MDD 的優劣。</li>
+</ol>
+<h2>爭議與不確定性</h2>
+<ul>
+<li>本表中「尾部資料少時 ES 估計不穩」是 Agent 的推論,已 ingest 論文只顯示蒙地卡羅收斂速度(Rockafellar &amp; Uryasev),沒有直接比較 ES 與 VaR 的估計誤差。</li>
+<li>MDD 一欄只有摘要層級來源,建議補讀全文後再更新本表。</li>
+<li><strong>建議立場</strong>:同時看一個尾部度量(ES)與一個績效比率(Sharpe,附標準誤),MDD 作為輔助的直觀指標。</li>
+<li><strong>信心程度</strong>:中。VaR/ES/Sharpe 部分有紮實理論來源;缺少實證回測與跨市場資料。</li>
+</ul></main>
+<footer>投資風險衡量 LLM Wiki · 由 Agent 維護的 markdown 知識庫</footer></body></html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IID 假設與序列相關(對 Sharpe ratio 的影響)</title><style>
+:root{--bg:#fbfaf7;--fg:#23262d;--mute:#667085;--line:#e2ddd0;--acc:#1f8a7d;--card:#fff;--code:#f1eee6}
+@media(prefers-color-scheme:dark){:root{--bg:#16181d;--fg:#e8e6df;--mute:#a3a8b3;--line:#2e323b;--acc:#5cc6b8;--card:#1f232b;--code:#262a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+nav{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:15px}
+nav a{color:var(--fg);text-decoration:none}nav a:hover{color:var(--acc)}
+main{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:2rem;line-height:1.3;margin:.4em 0 .6em}h2{font-size:1.45rem;margin:2em 0 .6em;padding-bottom:.25em;border-bottom:1px solid var(--line)}h3{font-size:1.15rem;margin:1.6em 0 .5em}
+a{color:var(--acc)}code{background:var(--code);padding:.1em .35em;border-radius:4px;font-size:.9em}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.5}pre code{background:none;padding:0}
+pre.mermaid{background:none;text-align:center}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93em;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}th{background:var(--code)}
+blockquote{margin:1em 0;padding:.4em 1em;border-left:4px solid var(--acc);background:var(--card);color:var(--mute)}
+.meta{font-size:13px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:1.2em;line-height:1.6}
+mjx-container[display=true]{overflow-x:auto;overflow-y:hidden}
+footer{max-width:920px;margin:0 auto;padding:0 20px 40px;font-size:13px;color:var(--mute)}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body><header><nav><a href="../../index.html">首頁</a><a href="../../wiki/overview.html">綜述</a><a href="../../wiki/index.html">目錄</a><a href="../../wiki/comparisons/risk-metrics-comparison.html">指標總比較</a><a href="../../AGENTS.html">AGENTS</a><a href="https://claude.ai/artifact/X1tYwyXWwQr4K1spMCeQX2">教學簡報</a></nav></header><main><div class="meta"><b>type</b>:concept ｜ <b>updated</b>:2026-11-18 ｜ <b>source_count</b>:2</div><h1>IID 假設與序列相關(對 Sharpe ratio 的影響)</h1>
+<h2>概念</h2>
+<p>許多風險與績效指標的簡單公式(例如 Sharpe ratio 的標準誤與 √T 年化)隱含報酬<strong>獨立同分布(IID)</strong>。實際報酬常有序列相關、波動度時變等,使這些簡單公式失準。<a href="../sources/lo-2002-statistics-sharpe-ratios.html">Lo (2002)</a> 系統性地量化這個問題。</p>
+<h2>三種設定(Lo, 2002)</h2>
+<ol>
+<li><strong>IID</strong>:估計量漸近常態,$\text{SE}(\widehat{SR})\approx\sqrt{(1+\tfrac12SR^2)/T}$。均值估計誤差與變異數估計誤差漸近獨立。</li>
+<li><strong>平穩(stationary)</strong>:允許序列相關、條件異質變異等;用 GMM 估計並以 Newey–West 處理自相關,得穩健標準誤。</li>
+<li><strong>時間聚合</strong>:月度轉年度等頻率轉換,需加入前 q−1 階自相關。</li>
+</ol>
+<h2>時間聚合公式</h2>
+<p>IID:$SR(q)=\sqrt q\,SR$。一般平穩:$SR(q)=\eta(q)\,SR$,其中</p>
+<p>$$\eta(q)=\frac{q}{\sqrt{q+2\sum_{k=1}^{q-1}(q-k)\rho_k}}$$</p>
+<p>AR(1)(自相關係數 ρ):</p>
+<p>$$\eta(q)=q\left[q+\frac{2\rho}{1-\rho}\left(q-\frac{1-\rho^q}{1-\rho}\right)\right]^{-1/2}$$</p>
+<p>驗算:ρ = 0 時退化為 $\sqrt q$;ρ = 0.2、q = 12 時得 2.88,與論文 Table 2 一致。</p>
+<h2>數字</h2>
+<p>q = 12(月 → 年)的係數:</p>
+<div class="wrap"><table>
+<thead>
+<tr>
+<th>月度一階自相關 ρ</th>
+<th>年化係數 η(12)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>−20%</td>
+<td>4.17</td>
+</tr>
+<tr>
+<td>0%(IID)</td>
+<td>3.46</td>
+</tr>
+<tr>
+<td>+20%</td>
+<td>2.88</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>正序列相關使多期變異數增長快於 q,分母變大,年化 Sharpe ratio 變小;負序列相關則相反。</li>
+<li>對沖基金的月度序列相關高(一階自相關 −20.2% 到 49.0%),IID 年化可高估逾 65%;例:Mortgage-backed securities 從 4.03 降為 2.44,Risk arbitrage A 反而從 3.25 升為 3.83;12 檔基金的排名也大幅改變。</li>
+<li>10 檔共同基金序列相關小,兩種年化差異不大。</li>
+</ul>
+<h2>穩健估計的代價與診斷</h2>
+<ul>
+<li>穩健估計量需額外估計自相關,漸近變異數更大。例:月度 Sharpe ratio = 1.00 時,年化(q = 12)的穩健估計變異數為 IID 估計的 334%。</li>
+<li>建議先用 <strong>Ljung–Box Q 統計量</strong>檢驗序列相關;不顯著就不必用穩健版。</li>
+</ul>
+<h2>與 Sharpe (1994) 的關係</h2>
+<p><a href="../sources/sharpe-1994-sharpe-ratio.html">Sharpe (1994)</a> 在簡化情況(各期無序列相關)導出 √T 縮放,並提醒複利與序列相關會使情況更複雜;Lo 補上其定量處理。</p>
+<h2>限制</h2>
+<p>漸近結果依賴大樣本;小樣本表現、偏態與厚尾的影響未被處理。</p>
+<h2>相關頁面</h2>
+<p><a href="../metrics/sharpe-ratio.html">Sharpe ratio</a></p></main>
+<footer>投資風險衡量 LLM Wiki · 由 Agent 維護的 markdown 知識庫</footer></body></html>
